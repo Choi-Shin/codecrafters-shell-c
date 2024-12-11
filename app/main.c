@@ -90,6 +90,11 @@ int execute_command(char **args) {
   return 0;
 }
 
+void pwd() {
+  char * current_path = getcwd(NULL, 0);
+  printf("%s\n", current_path);
+}
+
 int main() {
   char input[MAX_LINE];
   char **args = (char**) malloc(sizeof(char*) * MAX_ARGS);
@@ -115,6 +120,8 @@ int main() {
       echo(args);
     } else if (str_cmp(command, "type") == 0) {
       type(args);
+    } else if (str_cmp(command, "pwd") == 0) {
+      pwd();
     } else {
       char *path = find_file_in_path(command);
       if (access(path, X_OK) == 0) {
