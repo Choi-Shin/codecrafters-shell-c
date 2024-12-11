@@ -35,6 +35,18 @@ void echo(char** args) {
   }
   printf("\n");
 }
+
+void type(char ** args) {
+  char *command = args[1];
+  char *builtins[] = {"echo", "exit", "type", 0};
+  for (int i=0; builtins[i] != 0; i++) {
+    if (str_cmp(builtins[i], command) == 0) {
+      printf("%s is a shell builtin\n", command);
+      return;
+    }
+  }
+  handle_invalid_commands(command);
+}
 int main() {
   char input[MAX_LINE];
   char **args = (char**) malloc(sizeof(char*) * MAX_ARGS);
@@ -58,6 +70,8 @@ int main() {
     char* arg1 = args[1];
     if (str_cmp(args[0], "echo") == 0) {
       echo(args);
+    } else if (str_cmp(args[0], "type") == 0) {
+      type(args);
     } else {
       handle_invalid_commands(command);
     }
