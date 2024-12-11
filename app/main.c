@@ -75,6 +75,20 @@ void type(char ** args) {
   }
 }
 
+int execute_command(char **args) {
+  pid_t pid = fork();
+  if (pid < 0) {
+    perror("fork");
+    exit(1);
+  } else if (pid == 0) {
+    if (execvp(args[0], args) == -1) {
+      perror("execvp");
+    } 
+  } else {
+    waitpid(pid, 0, 0);
+  }
+  return 0;
+}
 
 int main() {
   char input[MAX_LINE];
@@ -97,14 +111,21 @@ int main() {
     num_args = split_command(input, args);
     char* command = args[0];
     char* arg1 = args[1];
-    if (str_cmp(args[0], "echo") == 0) {
+    if (str_cmp(command, "echo") == 0) {
       echo(args);
-    } else if (str_cmp(args[0], "type") == 0) {
+    } else if (str_cmp(command, "type") == 0) {
       type(args);
     } else {
-      handle_invalid_commands(command);
+      char *path = find_file_in_path(command);
+      if (access(path, X_OK) == 0) {
+        int result = execute_command(args);
+        if (result < 0) {
+          perror("failed");
+        }
+      } else {
+        handle_invalid_commands(command);
+      }
     }
-    
   }
   for (int i = 0; i < num_args; i++) {
     free(args[i]);
