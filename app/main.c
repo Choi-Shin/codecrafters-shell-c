@@ -24,7 +24,14 @@ int split_command(const char *line, char **args) {
   args[j] = 0;
   return j;
 }
-
+void echo(char** args) {
+  int i = 1;
+  while (args[i] != 0) {
+    printf("%s ", args[i]);
+    i++;
+  }
+  printf("\n");
+}
 int main() {
   char input[MAX_LINE];
   char **args = (char**) malloc(sizeof(char*) * MAX_ARGS);
@@ -46,7 +53,12 @@ int main() {
     num_args = split_command(input, args);
     char* command = args[0];
     char* arg1 = args[1];
-    handle_invalid_commands(command);
+    if (str_cmp(args[0], "echo") == 0) {
+      echo(args);
+    } else {
+      handle_invalid_commands(command);
+    }
+    
   }
   for (int i = 0; i < num_args; i++) {
     free(args[i]);
