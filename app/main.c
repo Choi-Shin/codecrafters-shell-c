@@ -5,7 +5,7 @@
 #define MAX_LINE 100
 
 void handle_invalid_commands(char *command) {
-  printf("%s: not found\n", command);
+  printf("%s: command not found\n", command);
 }
 
 int split_command(const char *line, char **args) {
@@ -28,18 +28,26 @@ int split_command(const char *line, char **args) {
 int main() {
   char input[MAX_LINE];
   char **args = (char**) malloc(sizeof(char*) * MAX_ARGS);
+  int num_args = 0;
   for (int i=0; i<MAX_ARGS; i++) {
     args[i] = (char*) malloc(sizeof(char*) * MAX_LINE);
   }
   // Uncomment this block to pass the first stage
-  printf("$ ");
-  fflush(stdout);
+  while(1) {
+    printf("$ ");
+    fflush(stdout);
 
-  // Wait for user input
-  fgets(input, MAX_LINE, stdin);
-  remove_newline(input);
-  int num_args = split_command(input, args);
-  char* command = args[0];
-  handle_invalid_commands(command);
+    // Wait for user input
+    fgets(input, MAX_LINE, stdin);
+    remove_newline(input);
+    num_args = split_command(input, args);
+    char* command = args[0];
+    handle_invalid_commands(command);
+  }
+
+  for (int i = 0; i < num_args; i++) {
+    free(args[i]);
+  }
+  free(args);
   return 0;
 }
