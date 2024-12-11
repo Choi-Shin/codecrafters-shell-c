@@ -40,15 +40,16 @@ void echo(char** args) {
 char *find_file_in_path(const char *command) {
   char *path = getenv("PATH");
   char *token;
-  char filepath[1024];
+  static char filepath[1024];
 
   if (path == 0) {
     return 0;
   }
-  token = str_tok(path, ":");
+  char *path_copy = str_dup(path);
+  token = str_tok(path_copy, ":");
   while (token != 0) {
     snprintf(filepath, sizeof(filepath), "%s/%s", token, command);
-    if (access(filepath, F_OK) == 0) {
+    if (access(filepath, X_OK) == 0) {
       return str_dup(filepath);
     }
     token = str_tok(0, ":");
@@ -58,7 +59,14 @@ char *find_file_in_path(const char *command) {
 
 
 void type(char ** args) {
+  char *builtins[] = {"echo", "exit", "type", 0};
   char *command = args[1];
+  for (int i=0; builtins[i] != 0; i++) {
+    if (str_cmp(command, builtins[i]) == 0) {
+      printf("%s is a shell builtin\n", command);
+      return;
+    }
+  }
   char *fullpath = find_file_in_path(command);
   if (fullpath != 0) {
     printf("%s is %s\n", command, fullpath);
