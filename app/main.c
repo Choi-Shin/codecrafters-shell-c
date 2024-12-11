@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "my_string.h"
 #define MAX_ARGS 10
 #define MAX_LINE 100
@@ -36,17 +37,37 @@ void echo(char** args) {
   printf("\n");
 }
 
+char *find_file_in_path(const char *command) {
+  char *path = getenv("PATH");
+  char *token;
+  char filepath[1024];
+
+  if (path == 0) {
+    return 0;
+  }
+  token = str_tok(path, ":");
+  while (token != 0) {
+    snprintf(filepath, sizeof(filepath), "%s/%s", token, command);
+    if (access(filepath, F_OK) == 0) {
+      return str_dup(filepath);
+    }
+    token = str_tok(0, ":");
+  }
+  return 0;
+}
+
+
 void type(char ** args) {
   char *command = args[1];
-  char *builtins[] = {"echo", "exit", "type", 0};
-  for (int i=0; builtins[i] != 0; i++) {
-    if (str_cmp(builtins[i], command) == 0) {
-      printf("%s is a shell builtin\n", command);
-      return;
-    }
+  char *fullpath = find_file_in_path(command);
+  if (fullpath != 0) {
+    printf("%s is %s\n", command, fullpath);
+  } else {
+    handle_invalid_commands(command);
   }
-  handle_invalid_commands(command);
 }
+
+
 int main() {
   char input[MAX_LINE];
   char **args = (char**) malloc(sizeof(char*) * MAX_ARGS);
