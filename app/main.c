@@ -90,9 +90,20 @@ int execute_command(char **args) {
   return 0;
 }
 
-void pwd() {
+char *pwd() {
   char * current_path = getcwd(NULL, 0);
   printf("%s\n", current_path);
+  return current_path;
+}
+
+// char *home() {
+  
+// }
+
+void cd(char *dest) {
+  if (chdir(dest) != 0) {
+    printf("cd: %s: No such file or directory\n", dest);
+  }
 }
 
 int main() {
@@ -122,6 +133,8 @@ int main() {
       type(args);
     } else if (str_cmp(command, "pwd") == 0) {
       pwd();
+    } else if (str_cmp(command, "cd") == 0) {
+      cd(arg1);
     } else {
       char *path = find_file_in_path(command);
       if (access(path, X_OK) == 0) {
