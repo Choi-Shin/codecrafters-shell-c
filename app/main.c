@@ -59,7 +59,7 @@ char *find_file_in_path(const char *command) {
 
 
 void type(char ** args) {
-  char *builtins[] = {"echo", "exit", "type", 0};
+  char *builtins[] = {"echo", "exit", "type", "pwd", 0};
   char *command = args[1];
   for (int i=0; builtins[i] != 0; i++) {
     if (str_cmp(command, builtins[i]) == 0) {
