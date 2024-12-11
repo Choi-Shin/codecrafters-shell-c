@@ -40,15 +40,14 @@ int main() {
     // Wait for user input
     fgets(input, MAX_LINE, stdin);
     remove_newline(input);
+    if (str_cmp(input, "exit 0") == 0) {
+      return 0;
+    }
     num_args = split_command(input, args);
     char* command = args[0];
     char* arg1 = args[1];
-    if (str_cmp(command, "exit") == 0 && str_cmp(arg1, "0") == 0) {
-      return 0;
-    }
     handle_invalid_commands(command);
   }
-
   for (int i = 0; i < num_args; i++) {
     free(args[i]);
   }
