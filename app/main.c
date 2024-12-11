@@ -5,7 +5,7 @@
 #define MAX_LINE 100
 
 void handle_invalid_commands(char *command) {
-  printf("%s: not found", command);
+  printf("%s: not found\n", command);
 }
 
 int split_command(const char *line, char **args) {
