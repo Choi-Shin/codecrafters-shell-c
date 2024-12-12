@@ -108,6 +108,7 @@ char *get_homedir() {
 }
 
 void cd(char *dest) {
+  char *mem = dest;
   char path[100];
   int idx = 0;
   if (*dest == '~') {
@@ -122,7 +123,7 @@ void cd(char *dest) {
   }
   path[idx] = '\0';
   if (chdir(path) != 0) {
-    printf("cd: %s: No such file or directory\n", dest);
+    printf("cd: %s: No such file or directory\n", mem);
   }
 }
 
