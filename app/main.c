@@ -108,13 +108,14 @@ void cd(char *dest) {
 
 int main() {
   char input[MAX_LINE];
-  char **args = (char**) malloc(sizeof(char*) * MAX_ARGS);
-  int num_args = 0;
-  for (int i=0; i<MAX_ARGS; i++) {
-    args[i] = (char*) malloc(sizeof(char*) * MAX_LINE);
-  }
+
   // Uncomment this block to pass the first stage
   while(1) {
+    char **args = (char**) malloc(sizeof(char*) * MAX_ARGS);
+    int num_args = 0;
+    for (int i=0; i<MAX_ARGS; i++) {
+      args[i] = (char*) malloc(sizeof(char*) * MAX_LINE);
+    }
     printf("$ ");
     fflush(stdout);
 
@@ -146,10 +147,11 @@ int main() {
         handle_invalid_commands(command);
       }
     }
+    for (int i = 0; i < num_args; i++) {
+      free(args[i]);
+    }
+    free(args);
   }
-  for (int i = 0; i < num_args; i++) {
-    free(args[i]);
-  }
-  free(args);
+
   return 0;
 }

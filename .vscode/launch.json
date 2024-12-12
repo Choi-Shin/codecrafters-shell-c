@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/dorong/Programming/codecrafters/own_shell_c/app",
+      "program": "/Users/dorong/Programming/codecrafters/own_shell_c/app/build/Debug/outDebug"
+    }
+  ]
+}
