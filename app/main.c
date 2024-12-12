@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <pwd.h>
+#include <sys/types.h>
 #include "my_string.h"
 #define MAX_ARGS 10
 #define MAX_LINE 100
@@ -100,8 +102,26 @@ char *pwd() {
   
 // }
 
+char *get_homedir() {
+  struct passwd *pw = getpwuid(getuid());
+  return pw->pw_dir;
+}
+
 void cd(char *dest) {
-  if (chdir(dest) != 0) {
+  char path[100];
+  int idx = 0;
+  if (*dest == '~') {
+    char *home = get_homedir();
+    dest++;
+    while (*home) {
+      path[idx++] = *home++;
+    }
+  }
+  while (*dest) {
+    path[idx++] = *dest++;
+  }
+  path[idx] = '\0';
+  if (chdir(path) != 0) {
     printf("cd: %s: No such file or directory\n", dest);
   }
 }
@@ -114,7 +134,7 @@ int main() {
     char **args = (char**) malloc(sizeof(char*) * MAX_ARGS);
     int num_args = 0;
     for (int i=0; i<MAX_ARGS; i++) {
-      args[i] = (char*) malloc(sizeof(char*) * MAX_LINE);
+      args[i] = (char*) malloc(sizeof(char) * MAX_LINE);
     }
     printf("$ ");
     fflush(stdout);
