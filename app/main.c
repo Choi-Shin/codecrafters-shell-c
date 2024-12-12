@@ -111,7 +111,7 @@ void cd(char *dest) {
   char path[100];
   int idx = 0;
   if (*dest == '~') {
-    char *home = get_homedir();
+    char *home = getenv("HOME");
     dest++;
     while (*home) {
       path[idx++] = *home++;
