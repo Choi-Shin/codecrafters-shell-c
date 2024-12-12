@@ -17,8 +17,16 @@ int split_command(const char *line, char **args) {
     while (line[i] == ' ' || line[i] == '\t') {
       i++;
     }
-    while (line[i] != ' ' && line[i] != '\t' && line[i] != '\0') {
-      args[j][k++] = line[i++];
+    if (line[i] == '\'') {
+      i++;
+      while (line[i] != '\'') {
+        args[j][k++] = line[i++];
+      }
+      i++;
+    } else {
+      while (line[i] != ' ' && line[i] != '\t' && line[i] != '\0') {
+        args[j][k++] = line[i++];
+      }
     }
     args[j][k] = '\0';
     j++;
