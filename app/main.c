@@ -52,7 +52,7 @@ int split_command(const char *line, char **args) {
 void echo(char** args) {
   int i = 1;
   while (args[i] != 0) {
-    printf("%s", args[i]);
+    printf("%s ", args[i]);
     i++;
   }
   printf("\n");
