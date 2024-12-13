@@ -4,7 +4,7 @@
 #include <pwd.h>
 #include <sys/types.h>
 #include "my_string.h"
-#define MAX_ARGS 20
+#define MAX_ARGS 10
 #define MAX_LINE 100
 
 void handle_invalid_commands(char *command) {
@@ -53,18 +53,6 @@ int split_command(const char *line, char **args) {
     args[j][k] = '\0';
     j++;
     k = 0;
-    flag = 0;
-    if (j != 1) {
-      while (line[i] == ' ' || line[i] == '\t') {
-        flag = 1;
-        args[j][k++] = line[i++];
-      }
-      args[j][k] = '\0';
-      if (flag) {
-        j++;
-        k = 0;
-      }
-    }
   }
   args[j] = 0;
   return j;
