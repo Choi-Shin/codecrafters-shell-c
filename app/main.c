@@ -14,18 +14,24 @@ void handle_invalid_commands(char *command) {
 int split_command(const char *line, char **args) {
   int i = 0, j = 0, k = 0;
   while (line[i] != '\0' && i < MAX_LINE) {
-    while (line[i] == ' ' || line[i] == '\t') {
-      i++;
-    }
+    // while (line[i] == ' ' || line[i] == '\t') {
+    //   i++;
+    // }
     if (line[i] == '\'') {
       i++;
       while (line[i] != '\'') {
+        if (line[i] == '\\') {
+          i++;
+        }
         args[j][k++] = line[i++];
       }
       i++;
     } else if (line[i] == '\"') {
       i++;
       while (line[i] != '\"') {
+        if (line[i] == '\\') {
+          i++;
+        }
         args[j][k++] = line[i++];
       }
       i++;
@@ -39,6 +45,14 @@ int split_command(const char *line, char **args) {
     }
     args[j][k] = '\0';
     j++;
+    int flag = 0;
+    while (line[i] == ' ' ||  line[i] == '\t') {
+      args[j][k++] = line[i++];
+    }
+    if (flag) {
+      args[j][k] = '\0';
+      j++;
+    }
     k = 0;
   }
   args[j] = 0;
@@ -49,9 +63,6 @@ void echo(char** args) {
   while (args[i] != 0) {
     printf("%s", args[i]);
     i++;
-    if (args[i] != 0) {
-      printf(" ");
-    }
   }
   printf("\n");
 }
