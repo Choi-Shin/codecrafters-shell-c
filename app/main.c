@@ -33,7 +33,6 @@ int split_command(const char *line, char **args) {
         }
         args[j][k++] = line[i++];
         if (line[i] == '\"' && line[i+1] != '\0' && line[i+1] != ' ' && line[i+1] != '\t') {
-          printf("%s\n", args[j]);
           i++;
         }
       }
