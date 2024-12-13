@@ -110,6 +110,9 @@ int execute_command(char **args) {
     perror("fork");
     exit(1);
   } else if (pid == 0) {
+    if (args[0][0] == '\'' || args[0][0] == '\"') {
+      execvp("cat", args);
+    }
     if (execvp(args[0], args) == -1) {
       perror("execvp");
     } 
