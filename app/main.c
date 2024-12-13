@@ -23,6 +23,12 @@ int split_command(const char *line, char **args) {
         args[j][k++] = line[i++];
       }
       i++;
+    } else if (line[i] == '\"') {
+      i++;
+      while (line[i] != '\"') {
+        args[j][k++] = line[i++];
+      }
+      i++;
     } else {
       while (line[i] != ' ' && line[i] != '\t' && line[i] != '\0') {
         args[j][k++] = line[i++];
