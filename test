@@ -9,3 +9,6 @@ echo "mixed\"quote'test'\\"
 
 echo 'script\\\ntest'
 # script\\\ntest
+
+echo "before\   after"
+# before\   after
