@@ -1,0 +1,11 @@
+echo "example'world'\\n'shell"
+# example'world'\n'shell
+
+echo "example\"insidequotes"world\"
+# example"insidequotesworld"
+
+echo "mixed\"quote'test'\\"
+# mixed"quote'test'\
+
+echo 'script\\\ntest'
+# script\\\ntest

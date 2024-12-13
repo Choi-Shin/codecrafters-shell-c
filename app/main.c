@@ -22,9 +22,9 @@ int split_command(const char *line, char **args) {
       i++;
       while (line[i] != '\'') {
         if (line[i] == '\"') {
-          flag = !flag;
+          flag = 1;
         }
-        if (!flag && line[i] == '\\') {
+        if (flag && line[i] == '\\') {
           i++;
         }
         args[j][k++] = line[i++];
@@ -33,10 +33,7 @@ int split_command(const char *line, char **args) {
     } else if (line[i] == '\"') {
       i++;
       while (line[i] != '\"') {
-        if (line[i] == '\'') {
-          flag = !flag;
-        }
-        if (!flag && line[i] == '\\') {
+        if (line[i] == '\\') {
           i++;
         }
         args[j][k++] = line[i++];
