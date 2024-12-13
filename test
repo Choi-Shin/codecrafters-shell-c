@@ -12,3 +12,6 @@ echo 'script\\\ntest'
 
 echo "before\   after"
 # before\   after
+
+echo "shell  hello"  "script"
+shell  hello script

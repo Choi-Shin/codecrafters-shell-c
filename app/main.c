@@ -25,15 +25,21 @@ int split_command(const char *line, char **args) {
       i++;
     } else if (line[i] == '\"') {
       i++;
-      while (line[i] != '\"') {
+      while (line[i] != '\"' && line[i] != '\0') {
         if (line[i] == '\\') {
           if (line[i+1] == '$' || line[i+1] == '\\' || line[i+1] == '\"') {
             i++;
           }
         }
         args[j][k++] = line[i++];
+        if (line[i] == '\"' && line[i+1] != '\0' && line[i+1] != ' ' && line[i+1] != '\t') {
+          printf("%s\n", args[j]);
+          i++;
+        }
       }
-      i++;
+      if (line[i] != '\0') {
+        i++;
+      }
     } else {
       while (line[i] != ' ' && line[i] != '\t' && line[i] != '\0') {
         if (line[i] == '\\') {
@@ -52,8 +58,11 @@ int split_command(const char *line, char **args) {
 void echo(char** args) {
   int i = 1;
   while (args[i] != 0) {
-    printf("%s ", args[i]);
+    printf("%s", args[i]);
     i++;
+    if (args[i] != 0) {
+      printf(" ");
+    }
   }
   printf("\n");
 }
